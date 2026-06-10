@@ -12,7 +12,7 @@ y no se liberan entre fases.
 - Campo Marte Fase 2 — Load In 28 abril → Load Out 30 abril
 - Festival X — Load In viernes → Load Out lunes (1 ShowDay)
 
->Campo Marte Fase 1 eCampo Marte Fase 2 son dos Eventos del mismo Proyecto.
+>Campo Marte Fase 1  y Campo Marte Fase 2 son dos Eventos del mismo Proyecto.
 > EDC con 3 ShowDays es un solo Evento — el recurso no se libera entre días.
 
 ## Atributos

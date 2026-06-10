@@ -18,16 +18,16 @@ qué puede hacer dentro del sistema.
 > Comparten el mismo ser humano pero son representaciones diferentes.
 
 ## Tipos de Persona (como Recurso)
-| Tipo | Contrato | Área |
-|---|---|---|
-| Project Manager | Nómina | Operaciones |
-| Supervisor EPS | Nómina / Eventual | Operaciones |
-| Jefe de Steel | Nómina / Eventual | Operaciones |
-| Armador Nómina | Nómina | Operaciones |
-| Armador Eventual | Destajo | Operaciones |
-| Jefe de Cuadrilla | Nómina / Destajo | Operaciones |
-| Staff / Auxiliar | Eventual | Operaciones |
-| Operador de Vehículo | Nómina / Eventual | Logística |
+| Tipo                 | Contrato                    | Área        |
+| -------------------- | --------------------------- | ----------- |
+| Project Manager      | Nómina + destajo / Eventual | Operaciones |
+| Supervisor EPS       | Nómina                      | Operaciones |
+| Jefe de Steel        | Nómina                      | Operaciones |
+| Armador Nómina       | Nómina                      | Operaciones |
+| Armador Eventual     | Eventual (solo destajo)     | Operaciones |
+| Jefe de Cuadrilla    | Nómina                      | Operaciones |
+| Staff / Auxiliar     | Eventual (solo destajo)     | Operaciones |
+| Operador de Vehículo | Nómina / Eventual           | Logística   |
 
 ## Atributos (como Recurso)
 - `id`
