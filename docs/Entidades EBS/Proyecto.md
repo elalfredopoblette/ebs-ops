@@ -1,43 +1,36 @@
-**¿Que es?** 
-Es una unidad temporal de trabajo que consume recursos, genera costos, produce entregables y tiene un responsable
+## ¿Qué es?
+El Proyecto es la unidad de negocio que agrupa uno o más [[Evento]]s
+bajo un mismo [[Cliente]], [[Contrato]] y contexto comercial.
 
-**¿Que contiene?** 
-Periodo (inicio-fin)
-Solicitante (cliente)
-Responsable interno   
-Recursos (presupuesto)
-Costos (Gastos)
-Entregables
+## Proyecto vs Evento
+Esta distinción es crítica en el modelo de dominio EBS:
 
-**¿Quien lx crea?**
-El área Comercial a traves de un Brief, su status puede cambiar dependiendo de si el cliente acepta o no la Cotización correspondiente.
+| | Proyecto | Evento |
+|---|---|---|
+| ¿Qué es? | Unidad comercial y contractual | Unidad operativa de ejecución |
+| ¿Quién lo maneja? | [[Gerente Comercial]] y [[Gerente Operaciones]] | [[Project Manager]] |
+| ¿Cuántos puede haber? | Uno por contrato | Uno o más por proyecto |
+| ¿Dónde vive parte de él? | En Odoo (cotización, contrato) | En este sistema (planeación, ejecución) |
+| ¿Tiene recursos asignados? | No directamente | Sí, via [[Asignacion]] |
 
-**¿Quien lx usa?**
-Operaciones para asignar roles
-Diseño para generar Plano y despiece
-Comercial para darle seguimiento al avance
-Proveedores Internos para 
+## Ejemplos
+- Proyecto simple: un contrato = un evento = una fecha en una ciudad
+- Proyecto multi-evento ([[Gira]]): un contrato = múltiples eventos en diferentes ciudades y fechas
 
-**¿Que genera?**
-Event ID (identificador)
-Brief (Descripcion del proyecto)
-Orden de Servicio (Desglose de presupuesto)
-Periodo (inicio-fin)
-Responsable
-Recursos (presupuesto)
-Costos (Gastos)
-Entregables
+## Atributos
+- nombre, cliente → [[Cliente]]
+- contrato → [[Contrato]] (referencia a Odoo)
+- estado — Prospecto / Confirmado / En ejecución / Cerrado / Cancelado
+- eventos → lista de [[Evento]]s
+- tipo — Simple / Gira
 
-**¿Que lx dispara?**
+## Estado
+Prospecto → Confirmado → En ejecución → Cerrado / Cancelado
 
-**¿Con que se relaciona?**
-- [[Cliente]]
-- [[Venue]]
-- [[Servicio]]
-- [[ODS]]
-- [[Despiece]]
-- [[Presupuesto]]
-- [[Entidades EBS/Persona]]
-- [[Vehículo]]
-- [[Inventario]]
-- [[Checklist]]
+La transición Prospecto → Confirmado ocurre cuando el [[Contrato]] se firma.
+
+## Relaciones
+- Un Proyecto tiene uno o más [[Evento]]s
+- Nace del [[Brief]] y la [[Cotización]] (ambos en Odoo)
+- Se confirma con el [[Contrato]] (Odoo)
+- Sus costos consolidados vienen de los [[Costos]] de cada [[Evento]]
