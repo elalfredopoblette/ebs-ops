@@ -1,14 +1,22 @@
 ## ¿Qué es?
-Una Gira es un [[Proyecto]] que consiste en múltiples [[Evento]]s
+Una Gira es un [[Proyecto]] de tipo `Gira` — múltiples [[Evento]]s
 en diferentes ciudades o fechas, con los mismos recursos moviéndose
-de venue en venue.
+de venue en venue sin regresar al almacén entre paradas.
 
-## Por qué es un caso especial
-En una Gira, los [[Recurso]]s no regresan al almacén entre eventos:
-van directo del [[Load Out]] de una ciudad al [[Load In]] de la siguiente.
+> **Nota de modelo:** Gira no es un Aggregate separado. Es el comportamiento
+> especial que tiene un Proyecto cuando `tipo = Gira`. Esta nota documenta
+> ese comportamiento diferencial.
 
-Esto crea una cadena de dependencias de disponibilidad que el
-[[Cross Check de Disponibilidad]] debe manejar de forma especial.
+## Qué lo hace diferente a un Proyecto simple
+
+| | Proyecto Simple | Proyecto tipo Gira |
+|---|---|---|
+| Eventos | 1 | 2 o más en secuencia |
+| Recursos entre eventos | Regresan al almacén | Van directo al siguiente venue |
+| Cross Check | Por evento | Por bloque completo de la Gira |
+| Movimientos | Salida / Entrada | Salida / Traslado / Traslado / Entrada |
+| Costos de logística | Local | Incluye flete internacional, aduana, carnets ATA |
+| Pago al personal | Tabulador estándar | Personal enviado a LATAM: monto cerrado individual |
 
 ## Ejemplo real
 EDC México gira latinoamericana:
@@ -19,35 +27,25 @@ EDC México gira latinoamericana:
 El Roof System sale de CDMX, va directo a Bogotá, luego a Santiago.
 No toca el almacén de EBS en ningún tramo intermedio.
 
-## Implicaciones en el modelo
+## Regla crítica de disponibilidad
+El [[Cross Check de Disponibilidad]] debe correr sobre el **periodo total
+de la Gira** (desde el primer Load In hasta el último Load Out).
 
-### Disponibilidad
-Un recurso en Gira está comprometido durante todo el bloque,
-desde el primer Load In hasta el último Load Out.
-No puede asignarse a otro evento en ningún punto intermedio.
+Un recurso disponible para el Evento 1 pero comprometido durante el Evento 3
+invalida su uso en toda la Gira — no se puede liberar entre paradas.
 
-### Movimientos
-Los [[Movimiento]]s en Gira incluyen traslados internacionales:
-tipo Traslado (Venue A → Venue B) sin pasar por almacén.
+## Atributos adicionales del Proyecto tipo Gira
+- `eventos` — lista ordenada cronológicamente
+- `periodo_total` — desde inicio Evento 1 hasta fin último Evento
+- `logistica_internacional` — bool
+- `pago_personal_latam` — monto cerrado por persona (no aplica tabulador)
 
-### Costos
-Los [[Costos]] de logística internacional (flete, aduana, carnets ATA)
-son costos de Gira, no de un evento individual.
-
-## Atributos
-- nombre, proyecto → [[Proyecto]]
-- eventos → lista de [[Evento]]s en orden cronológico
-- logistica_internacional — si hay traslados internacionales
-- periodo_total — desde inicio del primer evento hasta fin del último
-
-## Regla crítica
-En una Gira, el [[Cross Check de Disponibilidad]] debe correr
-para el periodo total de la Gira, no evento por evento.
-Un recurso disponible para el Evento 1 pero no para el 3
-invalida la Gira completa si es el único disponible.
+## Movimientos en Gira
+Los [[Movimiento]]s incluyen tipo **Traslado** (Venue A → Venue B)
+que no pasa por almacén EBS. El [[Almacen]] solo ve la Salida inicial
+y la Entrada final al terminar toda la Gira.
 
 ## Relaciones
-- Es un tipo de [[Proyecto]]
-- Contiene múltiples [[Evento]]s con orden cronológico
+- Es un [[Proyecto]] con `tipo = Gira`
 - Sus recursos generan [[Movimiento]]s de tipo Traslado
-- Afecta el [[Inventario]] durante todo el bloque de la gira
+- El [[Inventario]] los bloquea durante todo el bloque de la Gira

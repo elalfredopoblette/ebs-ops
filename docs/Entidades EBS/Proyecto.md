@@ -31,6 +31,6 @@ La transición Prospecto → Confirmado ocurre cuando el [[Contrato]] se firma.
 
 ## Relaciones
 - Un Proyecto tiene uno o más [[Evento]]s
-- Nace del [[Brief]] y la [[Cotización]] (ambos en Odoo)
+- Nace del [[Brief]] (vive en este sistema) y la [[Cotización]] (en Odoo)
 - Se confirma con el [[Contrato]] (Odoo)
 - Sus costos consolidados vienen de los [[Costos]] de cada [[Evento]]

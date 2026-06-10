@@ -65,7 +65,10 @@ este sistema solo registra la referencia y el impacto operativo.
 - Su costo impacta el [[Evento]] y genera una ODC en Odoo
 - Al activarse, el recurso rentado se comporta operativamente como un [[Recurso]] asignado
 
-## Pregunta abierta
-> ¿El recurso rentado aparece en el sistema como un Recurso temporal
-> con vida útil igual a la duración de la Renta?
-> ¿O solo se registra la Renta como un documento de cobertura?
+## El recurso rentado en el sistema
+Cuando la Renta pasa a estado **Confirmada**, el sistema crea un [[Recurso Temporal]]
+vinculado a esta Renta. Se trata exactamente igual que un recurso propio:
+aparece en el [[Despiece]], tiene [[Asignacion]], genera [[Movimiento]]s.
+
+Al cerrar la Renta, el Recurso Temporal se desactiva y sale del [[Inventario]].
+El proveedor cobra faltantes si algo no se devuelve en condiciones.

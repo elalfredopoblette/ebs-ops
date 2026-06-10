@@ -22,6 +22,7 @@ comprometerse simultáneamente con otros proyectos.
 | Vehículo    | Sprinter, camión                                                                                                  | Por unidad      |
 | Persona     | Supervisor EPS, Auxiliar EPS, Armador Nomina, Armador Eventual, Jefe de Cuadrilla, Jefe de Steel, Project Manager | Por persona     |
 | Herramienta | Taladros, Motores, Bombas de Agua, Computadoras, etc.                                                             | Por unidad      |
+| Temporal    | Recurso proveniente de una [[Renta]] confirmada. Se trata como propio durante su vigencia. Ver [[Recurso Temporal]] | Por unidad o m² |
 
 ## Atributos comunes
 - `id` — identificador único

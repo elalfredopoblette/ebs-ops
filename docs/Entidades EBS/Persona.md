@@ -35,6 +35,7 @@ qué puede hacer dentro del sistema.
 - `apellido`
 - `rol` → [[Roles]]
 - `tipo_contrato` — nómina / destajo / freelance / externo
+- `puesto_tabulador` → [[Tabulador]] — define BASE_FIJA, VIÁTICO_DÍA y VALOR_X_PUNTO
 - `disponibilidad_semanal` — días hábiles disponibles
 - `estado` — Disponible / Asignado / En tránsito / En operación / No disponible
 - `ciudad_base` — determina si requiere [[Vuelos]] o [[Hospedaje]]
@@ -44,6 +45,16 @@ qué puede hacer dentro del sistema.
 - `usuario`
 - `rol_sistema` → define permisos
 - `area` → [[Áreas]]
+
+## Crecimiento y cambio de puesto
+El puesto en el [[Tabulador]] es casi siempre el mismo para una persona.
+Sin embargo, existe movilidad interna: alguien que demostró habilidades
+puede ascender de Supervisor EPS a Jefe de Steel, o de Jefe de Steel a PM.
+
+Cuando una persona cambia de puesto:
+- Su `puesto_tabulador` se actualiza
+- Los eventos futuros usan el nuevo puesto
+- Los eventos pasados mantienen el registro con el puesto que tenía entonces
 
 ## Relaciones (como Recurso)
 - Se asigna a [[Evento]]s mediante [[Asignacion]]

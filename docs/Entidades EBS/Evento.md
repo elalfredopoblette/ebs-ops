@@ -26,6 +26,7 @@ y no se liberan entre fases.
 - `fecha_load_out` — datetime
 - `showdays` — número de días de operación
 - `presupuesto_operativo` → [[Presupuesto]]
+- `tiene_proyeccion_preliminar` — bool: indica si existe una Proyección de costos pre-contrato
 - `responsable` → [[Roles]]
 - `notas`
 
@@ -41,7 +42,7 @@ Todo Evento se compone de Periodos en este orden:
 Estas fases son [[Periodo]] — no son Eventos distintos.
 
 ## Estados posibles
-- **Prospecto** — en evaluación comercial, sin confirmar
+- **Prospecto** — en evaluación comercial, sin confirmar. Puede tener [[Procesos/Proyeccion|Proyección]] preliminar si el [[Brief]] ya fue recibido.
 - **Confirmado** — vendido, en planeación operativa
 - **En planeación** — [[Cross Check de Disponibilidad]] en curso
 - **Listo** — recursos asignados, [[ODS]] generada
