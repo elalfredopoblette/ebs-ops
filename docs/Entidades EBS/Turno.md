@@ -1,42 +1,76 @@
 ## ¿Qué es?
-Un Turno es la asignación de un bloque horario específico a una [[Persona]]
-dentro de una fase de un [[Evento]] (Load In, ShowDay o Load Out).
+Un Turno es el registro de la participación de una [[Persona]] en un día
+específico de un [[Evento]], con su [[Tipo de Dia]] correspondiente.
 
-Mientras la [[Asignacion]] dice "esta persona va a este Evento",
-el Turno dice "esta persona trabaja de 06:00 a 18:00 el día X".
-
-## Por qué existe
-Un [[Evento]] puede durar varios días. No toda la [[Persona]]l trabaja
-las mismas horas ni los mismos días. El Turno permite:
-- Distribuir la carga de trabajo
-- Calcular viáticos por días trabajados
-- Identificar quién está disponible en cada momento
-- Cumplir con regulaciones laborales
-
-## Ejemplos
-- Armador A: Load In día 1 turno 06:00–18:00, Load In día 2 turno 06:00–14:00
-- Supervisor EPS: ShowDay turno completo 08:00–00:00
-- Jefe de Steel: Load In días 1–3 turno 07:00–19:00, libre ShowDay, Load Out día 1
+Es la unidad mínima del cálculo de PXE (destajos).
 
 ## Atributos
-- `id`
-- `persona` → [[Entidades EBS/Persona]]
+- `persona` → [[Persona]] (quien trabaja)
 - `evento` → [[Evento]]
-- `fase` — Load In / ShowDay / Load Out
-- `fecha`
-- `hora_inicio`
-- `hora_fin`
-- `horas_totales` — calculado
-- `tipo_pago` — nómina / destajo / freelance
-- `monto_destajo` — si aplica
-- `notas`
+- `fecha` — fecha del día
+- `tipo_dia` → [[Tipo de Dia]] — Previo / Montaje / Show / Guardia / Desmontaje
+- `puntos` — derivado del tipo_dia
+- `pago_dia` — calculado: puntos × VALOR_X_PUNTO del puesto en [[Tabulador]]
+- `estado` — Planeado / Ejecutado / Cancelado / Convertido (Guardia→Montaje)
+
+## Cálculo del pago
+
+### Personal con tabulador estándar (México)
+```
+pago_dia = puntos(tipo_dia) × VALOR_X_PUNTO(puesto)
+
+Ejemplo — Armador en día de Montaje:
+  1.5 pts × $600 = $900
+
+Ejemplo — Armador en día de Show:
+  0.5 pts × $600 = $300
+```
+
+### Pago total por evento por persona
+```
+Pago operativo = BASE_FIJA(puesto)
+               + Σ pago_dia por cada Turno ejecutado
+
+Viáticos = días_presentes × VIÁTICO_DÍA(puesto)
+
+Pago total = Pago operativo + Viáticos
+```
+
+### Armador Eventual
+Su VALOR_X_PUNTO = 0, por lo que sus Turnos no generan pago variable.
+Su compensación es la BASE_FIJA negociada directamente.
+
+### Personal internacional (Sudamérica)
+Monto cerrado acordado individualmente. No usa el tabulador estándar.
+Se registra como monto_fijo en la Proyección.
+
+## Ciclo de vida
+```
+Planeado (en Proyección) → Ejecutado (confirma trabajo realizado)
+                         → Cancelado (persona no asistió)
+                         
+Guardia → [reporte de campo] → Convertido a Montaje (decisión Gerente Ops)
+```
+
+## Quién asigna los Turnos
+El [[Project Manager]] junto con el [[Jefe de Steel]] y [[Supervisor EPS]]
+durante la fase de [[Procesos/Proyeccion|Proyección]] del evento.
+Los jefes de área pueden ajustar los turnos en campo según lo que realmente ocurra.
+
+## Quién aprueba el cierre
+1. [[Project Manager]] aprueba los turnos ejecutados del evento
+2. [[Gerente Operaciones]] da aprobación final antes de que pasen a pago
+
+La conversión de Guardia → Montaje la decide **exclusivamente** el Gerente de Operaciones.
+
+## Personal de último momento
+Si alguien se incorpora en campo sin estar en la Proyección, el [[Jefe de Steel]]
+o [[Supervisor EPS]] lo registra en lista manual. El [[Gerente Operaciones]] sube
+ese nombre a la base de datos para poder incluirlo en la Proyección retroactivamente
+y procesar su pago.
 
 ## Relaciones
-- Pertenece a una [[Asignacion]] de [[Entidades EBS/Persona]]
-- Define los días que se calculan [[Viaticos]]
-- Es la base para [[Pagos Por Evento (destajos)]]
-- Informa a [[Logistica de Personal]] cuándo necesita traslados
-
-## Pregunta abierta
-> ¿Los Turnos los define el PM antes del evento o se registran en campo?
-> ¿Hay aprobación de Turnos o son solo informativos?
+- Pertenece a un [[Evento]]
+- Su tipo define el costo via [[Tabulador]] y [[Tipo de Dia]]
+- Sus totales forman la sección PXE de la [[ODS]]
+- Su aprobación desencadena el proceso en [[Pagos Por Evento (destajos)]]
